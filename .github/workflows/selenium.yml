@@ -8,6 +8,8 @@ on:
   pull_request:
     branches: [ "main" ]
 
+  workflow_dispatch:
+
 jobs:
   selenium-test:
 
@@ -28,10 +30,10 @@ jobs:
       - name: Set up Chrome
         uses: browser-actions/setup-chrome@v1
 
-      - name: Verify Java and Chrome
-        run: |
-          java -version
-          google-chrome --version
-
       - name: Run Selenium tests
         run: mvn clean test
+
+      - name: Show Test Reports
+        if: always()
+        run: |
+          cat target/surefire-reports/*.txt
